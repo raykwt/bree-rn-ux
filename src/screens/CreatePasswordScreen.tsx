@@ -3,7 +3,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import Input from '../components/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import PasswordValidateLayout, {
+import PasswordValidation, {
   PasswordError,
 } from '../components/PasswordValidateLayout';
 import { createPasswordSchema } from '../schema/passwordSchema';
@@ -76,7 +76,7 @@ const CreatePasswordScreen = () => {
           )}
           name="confirmPassword"
         />
-        <PasswordValidateLayout
+        <PasswordValidation
           password={password}
           error={errors.password as unknown as PasswordError}
         />

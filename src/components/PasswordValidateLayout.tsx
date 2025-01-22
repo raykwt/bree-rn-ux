@@ -10,7 +10,7 @@ export type PasswordError = {
   number: boolean;
 };
 
-const PasswordValidateLayout = ({
+const PasswordValidation = ({
   error,
   password,
 }: {
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PasswordValidateLayout;
+export default PasswordValidation;
