@@ -1,41 +1,50 @@
-## UX Enhancement
+# Welcome to your Expo app 👋
 
-The purpose for the workspace is to showcase the potential ux enhancement app. This repository focuses on improving the user experience of password validation, while other components are designed with minimalistic aesthetics and functionality.
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-**Current Design**
+## Get started
 
-The password validation error message lacks clarity because all the requirement are combined into a single message, making it difficult for users to identify which specific requirement their current password fails to meet. This design does not scale well when we add additional requirement e.g. include special character, include upper case character and include lower case character.
+1. Install dependencies
 
-<img src="https://github.com/user-attachments/assets/826b8cfd-0ea4-4384-a71d-f477882732cb" width="360" height="720">
+   ```bash
+   npm install
+   ```
 
+2. Start the app
 
-**Proposed Design**
+   ```bash
+    npx expo start
+   ```
 
-The proposed design introduces a layout where each password requirement is listed with a corresponding checkmark to indicate whether it has been fulfilled. This approach provides better clarity and helps users identify which requirements are met and which need attention.
+In the output, you'll find options to open the app in a
 
-Demo video
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Get a fresh project
 
-https://github.com/user-attachments/assets/c39b53bc-3c38-45b3-a700-08061b3f22de
-
-
-**Run on iOS**
+When you're ready, run:
 
 ```bash
-# install dependencies
-yarn
-
-# setup bundler (first setup only)
-bundle install
-
-# pod install
-bundle exec pod install
-
-# back to root directory
-cd ../
-
-# run app on iOS
-yarn ios
-
+npm run reset-project
 ```
+
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+
+## Learn more
+
+To learn more about developing your project with Expo, look at the following resources:
+
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+
+## Join the community
+
+Join our community of developers creating universal apps.
+
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
