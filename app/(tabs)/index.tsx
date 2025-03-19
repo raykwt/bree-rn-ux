@@ -11,6 +11,7 @@ import {
 import { PasswordValidation } from "../../components/PasswordValidation";
 import { primaryBlue } from "@/constants/Colors";
 
+// TODO: add react hook form
 export default function HomeScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
