@@ -9,10 +9,11 @@ import {
   Keyboard,
 } from "react-native";
 import { PasswordValidation } from "../../components/PasswordValidation";
-import { Lock } from "lucide-react-native";
+import { primaryBlue } from "@/constants/Colors";
 
 export default function HomeScreen() {
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isValid, setIsValid] = useState(false);
 
   const handleSubmit = () => {
@@ -24,6 +25,8 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <PasswordValidation
           password={password}
+          confirmPassword={confirmPassword}
+          onChangeConfirmPassword={setConfirmPassword}
           onChangePassword={setPassword}
           onValidationChange={setIsValid}
         />
@@ -38,7 +41,6 @@ export default function HomeScreen() {
             Next
           </Text>
         </Pressable>
-        <Button title="Next" onPress={handleSubmit} />
       </View>
     </TouchableWithoutFeedback>
   );
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 24,
-    backgroundColor: "#2C76F4",
+    backgroundColor: primaryBlue,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,

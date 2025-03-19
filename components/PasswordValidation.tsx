@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import { CircleCheck } from "lucide-react-native";
+import { AlertCircle, CircleCheck } from "lucide-react-native";
 import { z } from "zod";
+import { grey, primaryBlue } from "../constants/Colors";
 
 const passwordSchema = z
   .string()
@@ -41,21 +42,38 @@ const passwordRequirements: PasswordRequirement[] = [
 
 interface Props {
   password: string;
+  confirmPassword: string;
+  onChangeConfirmPassword: (confirmPassword: string) => void;
   onChangePassword: (password: string) => void;
   onValidationChange?: (isValid: boolean) => void;
 }
 
+const passwordFormSchema = z
+  .object({
+    password: passwordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 export function PasswordValidation({
   password,
+  confirmPassword,
   onChangePassword,
+  onChangeConfirmPassword,
   onValidationChange,
 }: Props) {
-  const [isFocused, setIsFocused] = React.useState(false);
-
-  React.useEffect(() => {
-    const validationResult = passwordSchema.safeParse(password);
-    onValidationChange?.(validationResult.success);
-  }, [password, onValidationChange]);
+  const [isFocused, setIsFocused] = useState(false);
+  const [confirmFocused, setConfirmFocused] = useState(false);
+  const shouldShowMismatch =
+    confirmPassword.length > 0 && password !== confirmPassword;
+  useEffect(() => {
+    const result = passwordFormSchema.safeParse({ password, confirmPassword });
+    const shouldShowMismatch =
+      confirmPassword.length > 0 && password !== confirmPassword;
+    onValidationChange?.(!shouldShowMismatch && result.success);
+  }, [password, confirmPassword, onValidationChange]);
 
   return (
     <View style={styles.container}>
@@ -68,13 +86,27 @@ export function PasswordValidation({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
+      <TextInput
+        value={confirmPassword}
+        onChangeText={onChangeConfirmPassword}
+        placeholder="Confirm password"
+        secureTextEntry
+        style={[styles.input, confirmFocused && styles.inputFocused]}
+        onFocus={() => setConfirmFocused(true)}
+        onBlur={() => setConfirmFocused(false)}
+      />
+      {shouldShowMismatch && (
+        <View style={styles.errorBanner}>
+          <Text style={styles.errorText}>Passwords don't match</Text>
+        </View>
+      )}
 
       <View style={styles.requirementsList}>
         {passwordRequirements.map((requirement, index) => {
           const isValid = requirement.validator(password);
           return (
             <View key={index} style={styles.requirementItem}>
-              <CircleCheck color={!isValid ? "#D6E3E6" : "#2C76F4"} />
+              <CircleCheck color={!isValid ? grey : primaryBlue} />
               <Text>{requirement.label}</Text>
             </View>
           );
@@ -94,14 +126,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 48,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: grey,
     borderRadius: 8,
     paddingHorizontal: 16,
     fontSize: 16,
     backgroundColor: "#fff",
+    marginVertical: 8,
   },
   inputFocused: {
-    borderColor: "#3b82f6",
+    borderColor: primaryBlue,
     shadowColor: "#3b82f6",
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.2,
@@ -116,8 +149,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
   },
-  requirementText: {
+  errorBanner: {
+    marginTop: 8,
+    backgroundColor: "#fef2f2",
+    borderRadius: 8,
+    padding: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    borderWidth: 1,
+    borderColor: "#fee2e2",
+  },
+  errorText: {
+    color: "#ef4444",
     fontSize: 14,
-    color: "#64748b",
+    fontWeight: "500",
   },
 });
