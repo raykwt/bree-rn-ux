@@ -1,117 +1,81 @@
+import React, { useState } from "react";
 import {
+  View,
   Text,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
-  TextInput,
+  Pressable,
+  Button,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
-import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { PasswordValidation } from "../../components/PasswordValidation";
+import { Lock } from "lucide-react-native";
 
-const lower = new RegExp("(?=.*[a-z])");
-const upper = new RegExp("(?=.*[A-Z])");
-const number = new RegExp("(?=.*[0-9])");
-const special = new RegExp("(?=.*[!@#$%^&*)+-])");
+export default function HomeScreen() {
+  const [password, setPassword] = useState("");
+  const [isValid, setIsValid] = useState(false);
 
-const passwordSchema = z
-  .string({ required_error: "Your password does not fulfill the complexity." })
-  .refine((data) => lower.test(data), {
-    path: ["lower"],
-  })
-  .refine((data) => upper.test(data), {
-    path: ["upper"],
-  })
-  .refine((data) => number.test(data), {
-    path: ["number"],
-  })
-  .refine((data) => special.test(data), {
-    path: ["special"],
-  })
-  .refine((data) => data.length >= 8 && data.length <= 20, {
-    path: ["length"],
-  });
-
-export const createPasswordSchema = z
-  .object({
-    password: passwordSchema,
-    confirmPassword: z.string({}),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-  });
-const CreatePasswordScreen = () => {
-  const {
-    watch,
-    control,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(createPasswordSchema),
-    defaultValues: {
-      password: "",
-      confirmPassword: "",
-    },
-    mode: "all",
-    reValidateMode: "onChange",
-  });
-  const password = watch("password");
+  const handleSubmit = () => {
+    console.log("Password submitted:", password);
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Text style={styles.text}> Set your password </Text>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              // secureTextEntry={true}
-              onBlur={onBlur}
-              onChange={onChange}
-              value={value}
-              placeholder="@Password1"
-              onChangeText={(text: String) => {
-                onChange(text);
-              }}
-            />
-          )}
-          name="password"
+    <TouchableWithoutFeedback onPress={Keyboard?.dismiss}>
+      <View style={styles.container}>
+        <PasswordValidation
+          password={password}
+          onChangePassword={setPassword}
+          onValidationChange={setIsValid}
         />
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              // secureTextEntry={true}
-              onBlur={onBlur}
-              onChange={onChange}
-              value={value}
-              placeholder="@Password1"
-              onChangeText={(text: String) => {
-                onChange(text);
-              }}
-            />
-          )}
-          name="confirmPassword"
-        />
-      </ScrollView>
-    </SafeAreaView>
+        <Pressable
+          style={[styles.button, !isValid && styles.buttonDisabled]}
+          disabled={!isValid}
+          onPress={handleSubmit}
+        >
+          <Text
+            style={[styles.buttonText, !isValid && styles.buttonTextDisabled]}
+          >
+            Next
+          </Text>
+        </Pressable>
+        <Button title="Next" onPress={handleSubmit} />
+      </View>
+    </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f8fafc",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 16,
   },
-  text: {
-    paddingHorizontal: 12,
-    fontSize: 32,
+  button: {
+    marginTop: 24,
+    backgroundColor: "#2C76F4",
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    shadowColor: "#3b82f6",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  buttonDisabled: {
+    backgroundColor: "#88acec",
+    shadowOpacity: 0,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  buttonTextDisabled: {
+    color: "#fff",
   },
 });
-
-export default CreatePasswordScreen;
