@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import { AlertCircle, CircleCheck } from "lucide-react-native";
+import { CircleCheck } from "lucide-react-native";
 import { z } from "zod";
 import { grey, primaryBlue } from "../constants/Colors";
 
@@ -118,9 +118,7 @@ export function PasswordValidation({
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    maxWidth: 400,
-    padding: 16,
+    flex: 1,
   },
   input: {
     width: "100%",

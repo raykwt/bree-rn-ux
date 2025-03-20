@@ -25,7 +25,7 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <Pressable style={{ flex: 1 }} onPress={Keyboard.dismiss}>
-          <Text style={{ fontSize: 24, fontWeight: "600", marginBottom: 16 }}>
+          <Text style={{ fontSize: 24, fontWeight: "600" }}>
             Set your password
           </Text>
 
