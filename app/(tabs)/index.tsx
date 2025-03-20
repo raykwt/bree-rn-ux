@@ -4,12 +4,12 @@ import {
   Text,
   StyleSheet,
   Pressable,
-  Button,
-  TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
 import { PasswordValidation } from "../../components/PasswordValidation";
 import { primaryBlue } from "@/constants/Colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // TODO: add react hook form
 export default function HomeScreen() {
@@ -22,28 +22,35 @@ export default function HomeScreen() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard?.dismiss}>
-      <View style={styles.container}>
-        <PasswordValidation
-          password={password}
-          confirmPassword={confirmPassword}
-          onChangeConfirmPassword={setConfirmPassword}
-          onChangePassword={setPassword}
-          onValidationChange={setIsValid}
-        />
-        <Pressable
-          style={[styles.button, !isValid && styles.buttonDisabled]}
-          disabled={!isValid}
-          onPress={handleSubmit}
-        >
-          <Text
-            style={[styles.buttonText, !isValid && styles.buttonTextDisabled]}
-          >
-            Next
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+        <Pressable style={{ flex: 1 }} onPress={Keyboard.dismiss}>
+          <Text style={{ fontSize: 24, fontWeight: "600", marginBottom: 16 }}>
+            Set your password
           </Text>
+
+          <PasswordValidation
+            password={password}
+            confirmPassword={confirmPassword}
+            onChangeConfirmPassword={setConfirmPassword}
+            onChangePassword={setPassword}
+            onValidationChange={setIsValid}
+          />
+          <View style={{ flex: 1, justifyContent: "flex-end" }} />
+          <Pressable
+            style={[styles.button, !isValid && styles.buttonDisabled]}
+            disabled={!isValid}
+            onPress={handleSubmit}
+          >
+            <Text
+              style={[styles.buttonText, !isValid && styles.buttonTextDisabled]}
+            >
+              Next
+            </Text>
+          </Pressable>
         </Pressable>
-      </View>
-    </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -51,8 +58,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f8fafc",
-    alignItems: "center",
-    justifyContent: "center",
     padding: 16,
   },
   button: {
@@ -63,6 +68,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     gap: 8,
     shadowColor: "#3b82f6",
     shadowOffset: { width: 0, height: 2 },

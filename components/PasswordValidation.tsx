@@ -19,23 +19,23 @@ interface PasswordRequirement {
 
 const passwordRequirements: PasswordRequirement[] = [
   {
-    label: "At least 8 characters long",
+    label: "At least 8 characterss",
     validator: (password) => password.length >= 8,
   },
   {
-    label: "Contains uppercase letter",
+    label: "Contains uppercase letter A-Z",
     validator: (password) => /[A-Z]/.test(password),
   },
   {
-    label: "Contains lowercase letter",
+    label: "Contains lowercase letter a-z",
     validator: (password) => /[a-z]/.test(password),
   },
   {
-    label: "Contains number",
+    label: "Contains number 0-9",
     validator: (password) => /[0-9]/.test(password),
   },
   {
-    label: "Contains special character",
+    label: "Contains special character !@#$%^&*()",
     validator: (password) => /[^A-Za-z0-9]/.test(password),
   },
 ];
